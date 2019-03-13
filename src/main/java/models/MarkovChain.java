@@ -4,18 +4,18 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MarkovChain {
-    public static HashMap<String, HashMap<String, NextCharacter>> createMarkovModel(List<String> names) {
+    public static HashMap<String, HashMap<String, NextCharacter>> createMarkovModel(List<String> names, int orderSize) {
         HashMap<String, HashMap<String, NextCharacter>> markovChain = new HashMap<>();
 
         // Loop through each name and generate stats
         for (String name : names) {
             int nameLength = name.length();
 
-            for (int i = 0; i < nameLength - 2; i++) {
-                // 2nd order key
-                String twoChars = name.substring(i, i + 2);
-                // 3rd char
-                String newChar = name.substring(i + 2, i + 3);
+            for (int i = 0; i < nameLength - orderSize; i++) {
+                // order key
+                String twoChars = name.substring(i, i + orderSize);
+                // char
+                String newChar = name.substring(i + orderSize, i + orderSize + 1);
 
                 // Check if already a key
                 if (markovChain.containsKey(twoChars)) {

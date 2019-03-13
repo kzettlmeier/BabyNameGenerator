@@ -24,6 +24,10 @@ public class Main {
             System.exit(-1);
         }
 
+        // Ask for order of the model
+        System.out.println("What should the order of the model be? ");
+        int orderSize = input.nextInt();
+
         // Ask for minimum length
         System.out.println("What should the minimum name length be? ");
         int minimumLength = input.nextInt();
@@ -52,24 +56,26 @@ public class Main {
         // Load in data sets
         List names;
         if (maleOrFemale.toLowerCase().equals("male")) {
-            names = DataLoader.loadDataFromFileIntoList("namesBoys.txt");
+            names = DataLoader.loadDataFromFileIntoList("namesBoys.txt", orderSize);
         } else {
-            names = DataLoader.loadDataFromFileIntoList("namesGirls.txt");
+            names = DataLoader.loadDataFromFileIntoList("namesGirls.txt", orderSize);
         }
 
         // Generate markov model
-        HashMap<String, HashMap<String, NextCharacter>> markovChain = MarkovChain.createMarkovModel(names);
+        HashMap<String, HashMap<String, NextCharacter>> markovChain = MarkovChain.createMarkovModel(names, orderSize);
 
         // Loop for how ever many names to generate
         List<String> generatedNames = new ArrayList<>();
+        String startEndChar = "_";
+        String startEndChars = startEndChar.repeat(orderSize);
         while (generatedNames.size() != numberOfNames) {
             // Generate a random name
-            String generatedName = GenerateName.generateName(markovChain);
+            String generatedName = GenerateName.generateName(markovChain, orderSize);
 
             // Validate name matches parameters
-            String trimmedName = generatedName.substring(2, generatedName.length() - 2);
+            String trimmedName = generatedName.substring(orderSize, generatedName.length() - orderSize);
             int nameLength = trimmedName.length();
-            if (nameLength >= minimumLength && nameLength <= maximumLength && generatedName.startsWith("__") && generatedName.endsWith("__") && names.contains(generatedName)) {
+            if (nameLength >= minimumLength && nameLength <= maximumLength && generatedName.startsWith(startEndChars) && generatedName.endsWith(startEndChars) && names.contains(generatedName)) {
                 generatedNames.add(trimmedName);
             }
         }

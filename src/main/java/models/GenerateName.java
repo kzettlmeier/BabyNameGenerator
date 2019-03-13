@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class GenerateName {
-    public static String generateName(HashMap<String, HashMap<String, NextCharacter>> markovChain) {
-        String name = "__";
-        String startingChars = "__";
+    public static String generateName(HashMap<String, HashMap<String, NextCharacter>> markovChain, int orderSize) {
+        String startEndChar = "_";
+        String name = startEndChar.repeat(orderSize);
+        String startingChars = startEndChar.repeat(orderSize);
         String nextChar = "";
         while (!nextChar.equals("_")) {
             if (markovChain.get(startingChars) == null) {
@@ -34,9 +35,9 @@ public class GenerateName {
             name += nextChar;
 
             // Set starting character to the new value
-            startingChars = startingChars.charAt(1) + nextChar;
+            startingChars = startingChars.substring(1, orderSize) + nextChar;
         }
 
-        return name + "_";
+        return name + startEndChar.repeat(orderSize - 1);
     }
 }
