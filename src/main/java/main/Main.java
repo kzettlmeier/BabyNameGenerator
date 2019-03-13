@@ -72,10 +72,10 @@ public class Main {
             // Generate a random name
             String generatedName = GenerateName.generateName(markovChain, orderSize);
 
-            // Validate name matches parameters
+            // Validate name matches parameters and does not exist in list
             String trimmedName = generatedName.substring(orderSize, generatedName.length() - orderSize);
             int nameLength = trimmedName.length();
-            if (nameLength >= minimumLength && nameLength <= maximumLength && generatedName.startsWith(startEndChars) && generatedName.endsWith(startEndChars) && names.contains(generatedName)) {
+            if (nameLength >= minimumLength && nameLength <= maximumLength && generatedName.startsWith(startEndChars) && generatedName.endsWith(startEndChars) && !names.contains(generatedName)) {
                 generatedNames.add(trimmedName);
             }
         }
